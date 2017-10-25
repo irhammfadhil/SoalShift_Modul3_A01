@@ -3,22 +3,41 @@
 #include <semaphore.h>
 #include <stdlib.h>
 
-int fact1,a;
+typedef long long ll;
+pthread_t thread[100];
 
-void* facta (void *arg) {
-	int i;
-	if (a==0) fact1=1;
-	else {
-		for (i=1;i<=a;i++) {
-		fact1*=i;
-		}
-	}
-	printf("%d", fact1);
+void* fact (void* num) {
+    int i;
+    ll res=1;
+    int a=(int)num;
+    if (a==0 || a==1) res=1;
+    else {
+        for (i=2;i<=a;i++) {
+            res=res*i;
+        }
+    }
+    printf("Hasil %d! = %lld\n", a,res);
 }
 
-int main() {
-	pthread_t threads[3];
-	int iret[3];
-	scanf("%d", &a);
-	iret[0] = pthread_create( &threads[0], NULL, facta, (void*) (&a));
+int main(int argc, char* argv[]) {
+	int i;j=1;
+	int err;
+	int  num[argc-1];
+    for (i=1;i<argc;i++) num[i]=atoi[i];
+    while(j<argc)//looping membuat thread 2x
+    {
+        err=pthread_create(&(tid[j]),NULL,fact,(void*)num[j]);//membuat thread
+        if(err!=0)//cek error
+        {
+            printf("\n can't create thread : [%s]",strerror(err));
+        }
+        else
+        {
+            printf("\n create thread success");
+        }
+        pthread_join(tid[j],NULL);
+        j++;
+    }
+	
+	
 }
