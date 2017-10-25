@@ -22,10 +22,10 @@ void* fact (void* num) {
 }
 
 int main(int argc, char* argv[]) {
-	int i;int j=2;
+	int i;int j=1;
 	int err;
 	int  num[argc];
-    for (i=2;i<argc;i++) num[i]=atoi(argv[i]);
+    for (i=1;i<argc;i++) num[i]=atoi(argv[i]);
     while(j<argc)//looping membuat thread 2x
     {
         err=pthread_create(&(thread[j]),NULL,fact,(void*)num[j]);//membuat thread
