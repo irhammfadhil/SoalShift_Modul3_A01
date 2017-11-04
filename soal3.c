@@ -1,17 +1,17 @@
 #include<stdio.h>
 #include<pthread.h>
 #include<unistd.h>
-#include<sys/wait.h>
+#include<stdlib.h>
  
 int lohan = 100;
 int kepiting = 100;
-int dec, sum;
 int choose;
-//int status = 0;
+int status = 0;
 
 pthread_t tid1;
 pthread_t tid2;
 pthread_t tid3;
+pthread_mutex_t lock;
 
 void* menu(void *arg);
 void* dec_lohan(void *arg);
@@ -36,19 +36,27 @@ int main()
 void* menu(void *arg)
 {
     int *choose=arg;
-    while(lohan<=0 || kepiting <=0 || lohan>100 || kepiting>100)
+    while(1)
     {
+        if(lohan<=0 || kepiting <=0 || lohan>100 || kepiting>100 == 1)
+        {
+            printf("\n\nSimulasi Selesai\n");
+            break;
+        }
+        
+        status = 1;
+        
         printf("Apa yang mau kamu lakukan ?\n");
         printf("1. Tampilkan status\n");
-        printf("2. Beri makan lohan\n");
+        printf("2. Beri makan Lohan\n");
         printf("3. Beri makan Kepiting\n");
         printf("pilih salah satu : "); scanf("%d", choose);
 
         if(*choose == 1)
         {
-        printf("Status saat ini :\n");
-        printf("Lohan : %d\n", lohan);
-        printf("kepiting : %d\n", kepiting);
+            printf("\n\nStatus saat ini :\n");
+            printf("Lohan    : %d\n", lohan);
+            printf("kepiting : %d\n\n", kepiting);
         } else
             if (*choose == 2)
             {
@@ -59,33 +67,47 @@ void* menu(void *arg)
                     kepiting = kepiting + 10;
                 } else 
                     {
-                        printf ("Input salah\n");
+                        printf ("\nInput salah\n\n");
                     }
-        //status = 1;
+        
     }
+    exit(EXIT_SUCCESS);
 }
 
 void* dec_lohan(void *arg)
 {
-    while(lohan<=0 || kepiting <=0 || lohan>100 || kepiting>100)
+    while(1)
     {
-        //if(status==1);
+        while(status==0);
+        
+        sleep(10);
         
         lohan = lohan - 15;
         
-        sleep(10);
-    }    
+        if(lohan<=0 || kepiting <=0 || lohan>100 || kepiting>100 == 1)
+        {
+            printf("\n\nSimulasi Selesai\n");
+            break;
+        }
+    }   
+    exit(EXIT_SUCCESS);
 }
-
 
 void* dec_kepiting(void *arg)
 {
-    while(lohan<=0 || kepiting <=0 || lohan>100 || kepiting>100)
+    while(1)
     {
-        //if(status==1);
+        while(status==0);
+        
+        sleep(20);
         
         kepiting = kepiting - 10;
         
-        sleep(20);
+        if(lohan<=0 || kepiting <=0 || lohan>100 || kepiting>100 == 1)
+        {
+            printf("\n\nSimulasi Selesai\n");
+            break;
+        }
     }    
+    exit(EXIT_SUCCESS);
 }
